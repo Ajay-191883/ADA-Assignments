@@ -1,0 +1,250 @@
+
+//*********************************************************
+//******************************bubble sort recursion
+//*********************************************************
+#include <iostream>
+#include <time.h>
+#include <ctime>  
+using namespace std;
+
+// A function to implement bubble sort
+void bubbleSort(int arr[], int n)
+{
+    // Base case
+    if (n == 1)
+        return;
+
+    // One pass of bubble sort. After
+    // this pass, the largest element
+    // is moved to end.
+    for (int i = 0; i < n - 1; i++)
+        if (arr[i] > arr[i + 1])
+            swap(arr[i], arr[i + 1]);
+
+    // Largest element is fixed,
+    // again calling funtion for remaining array
+    bubbleSort(arr, n - 1);
+}
+
+void fillArrayWithValues(int* ptrToFill, int sizeOfArray)
+{
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        int randomInt = rand();
+        ptrToFill[i] = randomInt;
+
+    }
+}
+
+/* Function to print an array */
+void printArray(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Driver program to test above functions
+int main()
+{
+    clock_t startClock, finishClock;
+    double timeCount;
+    int n;
+    cout << "Enter the size of array: ";
+    cin >> n;
+    int arr[n];
+    fillArrayWithValues(arr, n);
+    startClock = clock();
+    bubbleSort(arr, n);
+    finishClock = clock();
+    timeCount = finishClock - startClock;
+    printf("Sorted array : \n");
+    printArray(arr, n);
+    cout << "\nExecution time : " << timeCount / 100;
+    return 0;
+}
+
+//*********************************************************
+//******************************insertion sort recursion
+//*********************************************************
+
+#include <iostream>
+#include <time.h>
+#include <ctime>  
+using namespace std;
+
+void insertionSortRecursive(int arr[], int n)
+{
+    // Base case
+    if (n <= 1)
+        return;
+
+    // Sort first n-1 elements
+    insertionSortRecursive(arr, n - 1);
+
+    // Insert last element at its correct position
+    // in sorted array.
+    int last = arr[n - 1];
+    int j = n - 2;
+
+    /* Move elements of arr[0..i-1], that are
+    greater than key, to one position ahead
+    of their current position */
+    while (j >= 0 && arr[j] > last)
+    {
+        arr[j + 1] = arr[j];
+        j--;
+    }
+    arr[j + 1] = last;
+}
+
+void fillArrayWithValues(int* ptrToFill, int sizeOfArray)
+{
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        int randomInt = rand();
+        ptrToFill[i] = randomInt;
+
+    }
+}
+
+/* Function to print an array */
+void printArray(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Driver program to test above functions
+int main()
+{
+    clock_t startClock, finishClock;
+    double timeCount;
+    int n;
+    cout << "Enter the size of array: ";
+    cin >> n;
+    int arr[n];
+    fillArrayWithValues(arr, n);
+    startClock = clock();
+    insertionSortRecursive(arr, n);
+    finishClock = clock();
+    timeCount = finishClock - startClock;
+    printf("Sorted array : \n");
+    printArray(arr, n);
+    cout << "\nExecution time : " << timeCount / 100;
+    return 0;
+}
+
+//*********************************************************
+//******************************merge sort recursion
+//*********************************************************
+
+#include <iostream>
+#include <time.h>
+#include <ctime>  
+using namespace std;
+
+// Merges two subarrays of array[].
+// First subarray is arr[begin..mid]
+// Second subarray is arr[mid+1..end]
+void merge(int array[], int const left, int const mid, int const right)
+{
+    auto const subArrayOne = mid - left + 1;
+    auto const subArrayTwo = right - mid;
+
+    // Create temp arrays
+    auto* leftArray = new int[subArrayOne],
+        * rightArray = new int[subArrayTwo];
+
+    // Copy data to temp arrays leftArray[] and rightArray[]
+    for (auto i = 0; i < subArrayOne; i++)
+        leftArray[i] = array[left + i];
+    for (auto j = 0; j < subArrayTwo; j++)
+        rightArray[j] = array[mid + 1 + j];
+
+    auto indexOfSubArrayOne = 0, // Initial index of first sub-array
+        indexOfSubArrayTwo = 0; // Initial index of second sub-array
+    int indexOfMergedArray = left; // Initial index of merged array
+
+    // Merge the temp arrays back into array[left..right]
+    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
+        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
+            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
+            indexOfSubArrayOne++;
+        }
+        else {
+            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
+            indexOfSubArrayTwo++;
+        }
+        indexOfMergedArray++;
+    }
+    // Copy the remaining elements of
+    // left[], if there are any
+    while (indexOfSubArrayOne < subArrayOne) {
+        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
+        indexOfSubArrayOne++;
+        indexOfMergedArray++;
+    }
+    // Copy the remaining elements of
+    // right[], if there are any
+    while (indexOfSubArrayTwo < subArrayTwo) {
+        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
+        indexOfSubArrayTwo++;
+        indexOfMergedArray++;
+    }
+}
+
+// begin is for left index and end is
+// right index of the sub-array
+// of arr to be sorted */
+void mergeSort(int array[], int const begin, int const end)
+{
+    if (begin >= end)
+        return; // Returns recursively
+
+    auto mid = begin + (end - begin) / 2;
+    mergeSort(array, begin, mid);
+    mergeSort(array, mid + 1, end);
+    merge(array, begin, mid, end);
+}
+
+void fillArrayWithValues(int* ptrToFill, int sizeOfArray)
+{
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        int randomInt = rand();
+        ptrToFill[i] = randomInt;
+
+    }
+}
+
+/* Function to print an array */
+void printArray(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Driver program to test above functions
+int main()
+{
+    clock_t startClock, finishClock;
+    double timeCount;
+    int n;
+    cout << "Enter the size of array: ";
+    cin >> n;
+    int arr[n];
+    fillArrayWithValues(arr, n);
+    startClock = clock();
+    mergeSort(arr, 0, n - 1);
+    finishClock = clock();
+    timeCount = finishClock - startClock;
+    printf("Sorted array : \n");
+    printArray(arr, n);
+    cout << "\nExecution time : " << timeCount / 100;
+    return 0;
+}
+
+
